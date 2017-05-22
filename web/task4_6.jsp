@@ -1,5 +1,6 @@
 <%@ page import="java.util.LinkedHashMap" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %><%--
   Created by IntelliJ IDEA.
   User: alexzh
   Date: 22/05/17
@@ -30,18 +31,34 @@
         <input type="submit" name="do" value="поиск">
     </form>
     <%!
-        String key, value, output;
+        String key, value, output = "";
 
         LinkedHashMap coll = new LinkedHashMap();
         Object[] keyO = {"one", "twoo", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
         Object[] valueO = {"gomel", "gsu", "car", "street", "Math", "since", "rocket", "space", "computer", "mouse"};
-
     %>
     <%
+        for(int i=0; i<10; i++)
+            coll.put(keyO[i], valueO[i]);
+
+//        coll.entrySet().toArray();
+
         if(request.getParameter("do") != null) {
             if(request.getParameter("key") != "" || request.getParameter("value") != "") {
                 key = request.getParameter("key");
                 value = request.getParameter("value");
+
+                switch(request.getParameter("chose")) {
+                    case "search": {
+                        if(coll.containsKey(key)) {
+                            output += "<p>" + coll.entrySet() + "</p>";
+                        } else if(coll.containsValue(value)) {
+//                            output += "<p>" + coll.get(value) + "</p>";
+                        } else {
+                            output += "Нет совпадений";
+                        }
+                    }
+                }
 
             } else {
                 output += "Введите ключ и (или) значение";
@@ -50,7 +67,9 @@
             output += "Введите или ключ или значение";
         }
     %>
-    <%= output %>
+    <%=
+        output + "<br>" + coll.entrySet().toArray()
+    %>
     <%
         output = "";
     %>
