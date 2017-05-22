@@ -1,0 +1,19 @@
+h1 {
+    font-size: 18px;
+}
+
+ul li {
+    list-style: none;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: blue;
+}
+
+.black {
+    color: black;
+}
