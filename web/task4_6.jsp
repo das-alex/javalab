@@ -33,15 +33,13 @@
     <%!
         String key, value, output = "";
 
-        LinkedHashMap coll = new LinkedHashMap();
-        Object[] keyO = {"one", "twoo", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-        Object[] valueO = {"gomel", "gsu", "car", "street", "Math", "since", "rocket", "space", "computer", "mouse"};
+        LinkedHashMap<String, String> coll = new LinkedHashMap();
+        String[] keyO = {"one", "twoo", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+        String[] valueO = {"gomel", "gsu", "car", "street", "Math", "since", "rocket", "space", "computer", "mouse"};
     %>
     <%
         for(int i=0; i<10; i++)
             coll.put(keyO[i], valueO[i]);
-
-//        coll.entrySet().toArray();
 
         if(request.getParameter("do") != null) {
             if(request.getParameter("key") != "" || request.getParameter("value") != "") {
@@ -51,9 +49,15 @@
                 switch(request.getParameter("chose")) {
                     case "search": {
                         if(coll.containsKey(key)) {
-                            output += "<p>" + coll.entrySet() + "</p>";
+                            output += "<p>" + key + " - " + coll.get(key) + "</p>";
                         } else if(coll.containsValue(value)) {
-//                            output += "<p>" + coll.get(value) + "</p>";
+                            coll.forEach((key, val) -> {
+                                if (val.equals(value)) {
+                                    output += "<p>" + key + " - " + coll.get(key) + "</p>";
+                                }
+                            });
+                        } else if() {
+
                         } else {
                             output += "Нет совпадений";
                         }
@@ -68,7 +72,7 @@
         }
     %>
     <%=
-        output + "<br>" + coll.entrySet().toArray()
+        output + "<br>" + coll.entrySet()
     %>
     <%
         output = "";
