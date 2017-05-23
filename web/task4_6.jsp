@@ -24,7 +24,6 @@
                 <select name="chose" id="chose">
                     <option value="search">Поиск</option>
                     <option value="replace">Замена</option>
-                    <option value="sr_rpl">Поиск и замена</option>
                 </select>
             </li>
         </ul>
@@ -48,19 +47,12 @@
 
                 switch(request.getParameter("chose")) {
                     case "search": {
-                        if(coll.containsKey(key)) {
-                            output += "<p>" + key + " - " + coll.get(key) + "</p>";
-                        } else if(coll.containsValue(value)) {
-                            coll.forEach((key, val) -> {
-                                if (val.equals(value)) {
-                                    output += "<p>" + key + " - " + coll.get(key) + "</p>";
-                                }
-                            });
-                        } else if() {
-
-                        } else {
-                            output += "Нет совпадений";
-                        }
+                        check();
+                        break;
+                    }
+                    case "replace": {
+                        replace();
+                        break;
                     }
                 }
 
@@ -71,8 +63,71 @@
             output += "Введите или ключ или значение";
         }
     %>
+    <%!
+        public void check() {
+            if(key != "" && value != "") {
+
+                if (coll.containsKey(key) && coll.containsValue(value)) {
+
+                    coll.forEach((key1, val1) -> {
+                        if (key.equals(key1) || value.equals(val1)) {
+                            output += "<p>" + key1 + " - " + coll.get(key1) + "</p>";
+                        }
+                    });
+
+                } else if (coll.containsKey(key) || coll.containsValue(value)) {
+
+                    if (coll.containsKey(key)) {
+                        coll.forEach((key1, val1) -> {
+                            if (key.equals(key1)) {
+                                output += "<p>" + key1 + " - " + coll.get(key1) + "</p>";
+                            }
+                        });
+                    } else if (coll.containsValue(value)){
+                        coll.forEach((key1, val1) -> {
+                            if (value.equals(val1)) {
+                                output += "<p>" + key1 + " - " + coll.get(key1) + "</p>";
+                            }
+                        });
+                    } else {
+                        output += "Нет совпадений";
+                    }
+
+                } else {
+                    output += "Нет совпадений";
+                }
+
+            } else  if (key != "" && value == "") {
+
+                output += "<p>" + key + " - " + coll.get(key) + "</p>";
+
+            } else if (key == "" && value != "") {
+
+                coll.forEach((key, val) -> {
+                    if (val.equals(value)) {
+                        output += "<p>" + key + " - " + coll.get(key) + "</p>";
+                    }
+                });
+
+            } else {
+                output += "Нет совпадений";
+            }
+        }
+
+        public void replace() {
+            if(key != "") {
+                if (coll.containsKey(key)) {
+                    coll.replace(key, value);
+                } else {
+                    output += "Введите правильное значение ключа";
+                }
+            } else {
+                output += "Введите значение ключа";
+            }
+        }
+    %>
     <%=
-        output + "<br>" + coll.entrySet()
+        output + "<br><br>" + coll.entrySet()
     %>
     <%
         output = "";
