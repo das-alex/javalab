@@ -2,7 +2,9 @@
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="java.io.FileReader" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %><%--
   Created by IntelliJ IDEA.
   User: alexzh
   Date: 03/06/17
@@ -26,7 +28,8 @@
         <input type="submit" name="do" value="поиск">
     </form>
     <%!
-        private String line, output = "";
+        private Integer k = 0;
+        private String line, output = "", output2 = "";
         private List<String> name = new ArrayList();
         private List<String> adress = new ArrayList();
         private List<String> date = new ArrayList();
@@ -36,6 +39,7 @@
         adress.clear();
         date.clear();
         output = "";
+//        output2 = "";
 
         try(BufferedReader bf = new BufferedReader(new FileReader("/home/alexzh/IdeaProjects/laba5/web/input2.txt"))) {
             while((line = bf.readLine()) != null) {
@@ -47,7 +51,7 @@
             System.out.println("File doesn't found");
         }
 
-        output += "<table border=1 style='padding=20px'><tr><td>ФИО</td><td>Адрес</td><td>Дата</td></tr>";
+        output += "<table border=1 cellpadding=3><tr><td>ФИО</td><td>Адрес</td><td>Дата</td></tr>";
         for(int i=0; i<name.size(); i++) {
             output += "<tr><td>" + name.get(i) +
                     "</td><td>" + adress.get(i) +
@@ -57,13 +61,55 @@
 
         if(request.getParameter("do") != null) {
             String last_name = request.getParameter("last_name");
-            String date = request.getParameter("date");
+            String dat = request.getParameter("date");
 
-            if(last_name != "") {
+            if(last_name != "" || dat != "") {
 
+                if(dat != "" && last_name == "") {
+
+                    if(date.contains(dat)) {
+                        k = 0;
+                        date.forEach(s -> {
+                            if(dat.equals(s)) {
+                                output2 = "<table border=1 cellpadding=3><tr><td>"+ name.get(k) +
+                                        "</td><td>"+ adress.get(k) +
+                                        "</td><td>"+ date.get(k) +"</td></tr></table>";
+                            }
+                            k++;
+                        });
+                    } else {
+                        output2 = "<p>Нет совпадений</p>";
+                    }
+
+                } else if(dat == "" && last_name != "") {
+                    k = 0;
+                    output2 = "<table border=1 cellpadding=3>";
+
+                    for(String str : name) {
+                        System.out.println("do " + k + " - " + str + " - " + last_name);
+
+                        if(str.contains(last_name)) {
+                            System.out.println("output");
+                            output2 += "<tr><td>"+ name.get(k) +
+                                    "</td><td>"+ adress.get(k) +
+                                    "</td><td>"+ date.get(k) +"</td></tr>";
+                        }
+                        k++;
+                    }
+
+                    output2 += "</table>";
+
+                } else {
+                    output2 = "Уфффф";
+                }
+
+
+            } else {
+                output2 = "<p>Для поиска введите фамилию или дату (в формате дд-мм-гггг)</p>";
             }
         }
     %>
     <%=output%>
+    <%="<p>Найдено:</p>" + output2%>
 </body>
 </html>
