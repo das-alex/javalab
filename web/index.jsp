@@ -14,6 +14,7 @@
                 <li><a href="task4_3.jsp">Задание 4</a></li>
                 <li><a href="task4_6.jsp">Задание 5</a></li>
                 <li><a href="task4_8b.jsp">Задание 6</a></li>
+                <li><a href="task6.jsp">Задание 7</a></li>
             </ul>
         </nav>
   </body>
