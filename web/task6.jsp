@@ -3,8 +3,7 @@
 <%@ page import="java.io.FileReader" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.regex.Pattern" %>
-<%@ page import="java.util.regex.Matcher" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: alexzh
   Date: 03/06/17
